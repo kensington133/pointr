@@ -1,0 +1,58 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.info {
+	text-align: center;
+}
+
+.game,
+.overLay {
+	width: 100%;
+	height: 100%;
+}
+.overLay {
+	visibility: hidden;
+	position: absolute;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 500;
+}
+.game {
+	z-index: 0;
+}
+
+.gameOver {
+	background: #fff;
+	position: absolute;
+	z-index: 1000;
+	text-align: center;
+	padding: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 7px 7px 30px 0px rgba(50, 50, 50, 0.3);
+	-moz-box-shadow:    7px 7px 30px 0px rgba(50, 50, 50, 0.3);
+	box-shadow:         7px 7px 30px 0px rgba(50, 50, 50, 0.3);
+}
+.gameOver h2 {
+	padding-bottom: 10px;
+}
+
+.gameOver .restart {
+	display: block;
+	padding: 5px 10px;
+	background: #00d419;
+	color: #fff;
+	text-decoration: none;
+	cursor: pointer;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+.gameOver .restart:hover {
+	background: #07ae1b;
+}
