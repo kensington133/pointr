@@ -6,8 +6,16 @@ body {
 	font-family: 'Open Sans', sans-serif;
 }
 
-.info {
-	text-align: center;
+.info, .timer {
+	position: absolute;
+}
+
+.timer {
+	overflow: hidden;
+	font-size: 30px;
+}
+.timer div {
+	float: left;
 }
 
 .game,
@@ -55,4 +63,58 @@ body {
 }
 .gameOver .restart:hover {
 	background: #07ae1b;
+}
+.gameOVer .score {
+	margin-bottom: 5px;
+}
+
+.userOverlay {
+	/*visibility: hidden;*/
+	position: absolute;
+	background: rgba(0, 0, 0, 0.9);
+	z-index: 500;
+}
+
+.userOverlay input {
+	width: 100%;
+	height: 45px;
+	font-size: 20px;
+	color: #ececec;
+	background-color: transparent;
+	border: none;
+	outline: none;
+	padding-bottom: 5px;
+	text-align: center;
+	position: absolute;
+}
+
+.chatFrame {
+	position: fixed;
+	right: 0px;
+	top: 0px;
+	width: 275px;
+	border-left: 1px solid #5b6564;
+}
+.chatFrame input {
+	width: 100%;
+	height: 45px;
+	font-size: 20px;
+	color: #5b6564;
+	background-color: #fff;
+	border: none;
+	outline: none;
+	padding-bottom: 5px;
+	text-align: center;
+	position: absolute;
+	bottom: 0px;
+}
+.chatFrame .messages {
+	overflow: scroll;
+}
+.chatFrame .messages .message {
+	padding: 5px 10px;
+}
+.message .userName {
+	padding-right: 10px;
+	color: #38ee00;
 }
