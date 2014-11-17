@@ -46,10 +46,6 @@ body {
 	-moz-box-shadow:    7px 7px 30px 0px rgba(50, 50, 50, 0.3);
 	box-shadow:         7px 7px 30px 0px rgba(50, 50, 50, 0.3);
 }
-.gameOver h2 {
-	padding-bottom: 10px;
-}
-
 .gameOver .restart {
 	display: block;
 	padding: 5px 10px;
@@ -64,12 +60,11 @@ body {
 .gameOver .restart:hover {
 	background: #07ae1b;
 }
-.gameOVer .score {
+.gameOver .score {
 	margin-bottom: 5px;
 }
 
 .userOverlay {
-	/*visibility: hidden;*/
 	position: absolute;
 	background: rgba(0, 0, 0, 0.9);
 	z-index: 500;
@@ -94,6 +89,7 @@ body {
 	top: 0px;
 	width: 275px;
 	border-left: 1px solid #5b6564;
+	overflow-y: scroll;
 }
 .chatFrame input {
 	width: 275px;
@@ -109,13 +105,9 @@ body {
 	bottom: 0px;
 	right: 0px;
 }
-.chatFrame {
-	overflow-y: scroll;
-}
 .chatFrame .messages {
-padding-bottom: 50px;
+	padding-bottom: 50px;
 }
-
 .chatFrame .messages .message {
 	padding: 5px 10px;
 }
