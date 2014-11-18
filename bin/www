@@ -8,7 +8,56 @@ var server = app.listen(app.get('port'), function() {
   debug('Express server listening on port ' + server.address().port);
 });
 
-var io = require('socket.io').listen(sever);
+var io = require('socket.io').listen(server);
+
+var userNames = {};
+var totalUsers = 0;
+
 io.sockets.on('connection', function (socket) {
-	console.log('Connection');
+	var userAdded = false;
+
+	//check for new user count every second
+	setInterval( function(){
+		socket.emit('total-users', totalUsers);
+	}, 1000);
+
+
+	socket.on('add-user', function(username){
+		//store username in socket session
+		socket.username = username;
+		userNames[username] = username;
+		totalUsers++;
+		userAdded = true;
+
+		console.log(userNames);
+		console.log(totalUsers);
+
+		//once added tell all users about it
+		socket.broadcast.emit('new-user', {
+			username: socket.username,
+			totalUsers: totalUsers
+		});
+	});
+
+	socket.on('add-message', function(messageData){
+		socket.broadcast.emit('new-message', {
+			username: socket.username,
+			message: messageData
+		});
+	});
+
+	//when a user disconects - tell users
+	socket.on('disconnect', function () {
+		if (userAdded) {
+			delete userNames[socket.username];
+			totalUsers--;
+
+			socket.broadcast.emit('user-left', {
+				username: socket.username,
+				numUsers: totalUsers
+			});
+		}
+		console.log(userNames);
+		console.log(totalUsers);
+	});
 });

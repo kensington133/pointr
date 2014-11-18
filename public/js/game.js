@@ -136,6 +136,77 @@ function pad ( val ) {
 }
 
 
+/* SOCKET IO FUNCTIONS */
+var socket = io();
+var	username,
+	usercolor,
+	connected = false;
+
+var colors = [
+	'#f2992b', '#0888e7', '#bb18db',
+	'#0fce09', '#00ffb8', '#f06214 ',
+	'#e11a2f', '#0e6ef2', '#ff00f4'
+];
+
+// Gets the color of a username
+function getUserColor (username) {
+
+	var hash = 7;
+	for (var i = 0; i < username.length; i++) {
+		hash = username.charCodeAt(i) + (hash << 5) - hash;
+	}
+
+	var index = Math.abs(hash % colors.length);
+	return colors[index];
+}
+
+function addUser(){
+	username = $('#user').val().trim();
+	usercolor = randomColor();
+	console.log(username);
+	if(username){
+		$('.userOverlay').fadeOut();
+		socket.emit('add-user', username);
+	}
+}
+
+function sendMessage(){
+	var messageText = $('#chatText').val().trim();
+	console.log(messageText);
+	if(messageText.length > 0){
+		$('#chatText').val('');
+		displayMessage({
+			username: username,
+			message: messageText
+		});
+		socket.emit('add-message', messageText);
+	}
+}
+
+function displayMessage(data){
+	var messageDiv = $('<div class="message">');
+	var newUserName = $('<span class="userName">').text(data.username).css('color', getUserColor(username));
+	var newUserText = $('<span class="messageText">').text(data.message);
+	messageDiv.append(newUserName, newUserText);
+	$('.messages').append(messageDiv);
+}
+
+socket.on('total-users', function(data){
+	$('.totalUsers span').text(data);
+});
+
+socket.on('new-user', function(data){
+	console.log(data);
+	var messageDiv = $('<div class="message">');
+	var newUserName = $('<span class="userName">').text(data.username).css('color', getUserColor(data.username));
+	var newUserText = $('<span class="messageText">').text('Has joined the game');
+	messageDiv.append(newUserName, newUserText);
+	$('.messages').append(messageDiv);
+	$('.totalUsers span').text(data.totalUsers);
+});
+
+// socket.on('new-message', )
+
 $(document).ready(function(){
 	init();
 });
@@ -143,3 +214,23 @@ $(document).ready(function(){
 $(window).resize( function(){
 	resize();
 });
+
+$(window).keydown(function(e){
+	//if any key but ctrl, cmd etc..
+	if (!(e.ctrlKey || e.metaKey || e.altKey)) {
+     	if(username){
+	    	$('#chatText').focus();
+	  	} else {
+	  		$('#user').focus();
+	  	}
+    }
+
+	//on enter key
+	if(e.which === 13){
+		if(username){
+			sendMessage();
+		} else {
+			addUser();
+		}
+	}
+})
