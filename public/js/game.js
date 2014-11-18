@@ -185,7 +185,7 @@ function sendMessage(){
 
 function displayMessage(data){
 	var messageDiv = $('<div class="message">');
-	var newUserName = $('<span class="userName">').text(data.username).css('color', getUserColor(username));
+	var newUserName = $('<span class="userName">').text(data.username).css('color', getUserColor(data.username));
 	var newUserText = $('<span class="messageText">').text(data.message);
 	messageDiv.append(newUserName, newUserText);
 	$('.messages').append(messageDiv);
@@ -205,7 +205,9 @@ socket.on('new-user', function(data){
 	$('.totalUsers span').text(data.totalUsers);
 });
 
-// socket.on('new-message', )
+socket.on('new-message', function(data){
+	displayMessage(data);
+});
 
 $(document).ready(function(){
 	init();
