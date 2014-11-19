@@ -191,6 +191,12 @@ function displayMessage(data){
 	var newUserText = $('<span class="messageText">').text(data.message);
 	messageDiv.append(newUserName, newUserText);
 	$('.messages').append(messageDiv);
+	scrollUp();
+}
+
+function scrollUp(){
+	console.log($('.messages').prop("scrollHeight") - $('#chatText').height());
+	$('.chatFrame').scrollTop($('.messages').prop("scrollHeight") - $('#chatText').height());
 }
 
 socket.on('total-users', function(data){
@@ -205,10 +211,21 @@ socket.on('new-user', function(data){
 	messageDiv.append(newUserName, newUserText);
 	$('.messages').append(messageDiv);
 	$('.totalUsers span').text(data.totalUsers);
+	scrollUp();
 });
 
 socket.on('new-message', function(data){
 	displayMessage(data);
+});
+
+socket.on('user-left', function(data){
+	var messageDiv = $('<div class="message">');
+	var newUserName = $('<span class="userName">').text(data.username).css('color', getUserColor(data.username));
+	var newUserText = $('<span class="messageText">').text('Has left the game');
+	messageDiv.append(newUserName, newUserText);
+	$('.messages').append(messageDiv);
+	$('.totalUsers span').text(data.totalUsers);
+	scrollUp();
 });
 
 $(document).ready(function(){

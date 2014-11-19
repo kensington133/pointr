@@ -107,11 +107,14 @@ body {
 }
 
 .chatFrame .totalUsers {
+	position: fixed;
+	background: #fff;
+	width: 275px;
 	font-size: 20px;
 	text-align: center;
 }
 .chatFrame .messages {
-	padding-bottom: 50px;
+	padding: 30px 0px 50px 0px;
 }
 .chatFrame .messages .message {
 	padding: 5px 10px;
