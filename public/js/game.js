@@ -40,7 +40,7 @@ var paper = Raphael("game", "100%", "100%"),
 canvas = $(paper.canvas),
 offset = canvas.offset(),
 margin = 50,
-hover = 1;
+clicked = 1;
 
 function init() {
 
@@ -65,13 +65,13 @@ function init() {
 		e.currentTarget.style.cursor="crosshair";
 
 		//players only allowed to hover once
-		if( hover === 1){
+		if( clicked === 1){
 			circle.attr('fill', '#00d419');
 			timer.start();
 			playGame(circle);
 		}
 
-		hover++;
+		clicked++;
 
 		//if the player falls out of the shape, game over
 		circle.mouseout(function(e){
@@ -103,6 +103,8 @@ function changeScale(element){
 function endGame(element){
 	element.attr('fill', '#df2020');
 	element.stop();
+	element.animate({opacity: 0}, 1000, function(){this.remove()});
+
 	var secondsLasted = parseInt($('.ss').text());
 	var minutesLasted = parseInt($('.mm').text());
 	var minInflection = (minutesLasted > 1)? 'minutes' : 'minute';
@@ -217,6 +219,18 @@ $(window).resize( function(){
 	resize();
 });
 
+$('.restart').click( function(){
+	//reset timer and fadeout game over overlay
+	$('.mm').text('00');
+	$('.ss').text('00');
+	$('.overLay').fadeOut();
+
+	//reset clicked counter
+	clicked = 1;
+	//load circle again
+	init();
+});
+
 $(window).keydown(function(e){
 	//if any key but ctrl, cmd etc..
 	if (!(e.ctrlKey || e.metaKey || e.altKey)) {
@@ -235,4 +249,4 @@ $(window).keydown(function(e){
 			addUser();
 		}
 	}
-})
+});
