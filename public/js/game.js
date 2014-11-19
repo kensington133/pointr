@@ -174,7 +174,7 @@ function addUser(){
 
 function sendMessage(){
 	var messageText = $('#chatText').val().trim();
-	console.log(messageText);
+
 	if(messageText.length > 0){
 		$('#chatText').val('');
 		displayMessage({
@@ -194,8 +194,17 @@ function displayMessage(data){
 	scrollUp();
 }
 
+function displayCustomMessage(data, message){
+	var messageDiv = $('<div class="message">');
+	var newUserName = $('<span class="userName">').text(data.username).css('color', getUserColor(data.username));
+	var newUserText = $('<span class="messageText">').text(message);
+	messageDiv.append(newUserName, newUserText);
+	$('.messages').append(messageDiv);
+	$('.totalUsers span').text(data.totalUsers);
+	scrollUp();
+}
+
 function scrollUp(){
-	console.log($('.messages').prop("scrollHeight") - $('#chatText').height());
 	$('.chatFrame').scrollTop($('.messages').prop("scrollHeight") - $('#chatText').height());
 }
 
@@ -204,14 +213,7 @@ socket.on('total-users', function(data){
 });
 
 socket.on('new-user', function(data){
-	console.log(data);
-	var messageDiv = $('<div class="message">');
-	var newUserName = $('<span class="userName">').text(data.username).css('color', getUserColor(data.username));
-	var newUserText = $('<span class="messageText">').text('Has joined the game');
-	messageDiv.append(newUserName, newUserText);
-	$('.messages').append(messageDiv);
-	$('.totalUsers span').text(data.totalUsers);
-	scrollUp();
+	displayCustomMessage(data, 'Has joined the game');
 });
 
 socket.on('new-message', function(data){
@@ -219,13 +221,7 @@ socket.on('new-message', function(data){
 });
 
 socket.on('user-left', function(data){
-	var messageDiv = $('<div class="message">');
-	var newUserName = $('<span class="userName">').text(data.username).css('color', getUserColor(data.username));
-	var newUserText = $('<span class="messageText">').text('Has left the game');
-	messageDiv.append(newUserName, newUserText);
-	$('.messages').append(messageDiv);
-	$('.totalUsers span').text(data.totalUsers);
-	scrollUp();
+	displayCustomMessage(data, 'Has left the game');
 });
 
 $(document).ready(function(){
