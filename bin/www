@@ -11,7 +11,8 @@ var server = app.listen(app.get('port'), function() {
 var io = require('socket.io').listen(server);
 
 var userNames = {};
-var totalUsers = 0;
+var totalUsers = 0,
+	highScore = '00:00';
 
 io.sockets.on('connection', function (socket) {
 	var userAdded = false;
@@ -28,9 +29,6 @@ io.sockets.on('connection', function (socket) {
 		userNames[username] = username;
 		totalUsers++;
 		userAdded = true;
-
-		console.log(userNames);
-		console.log(totalUsers);
 
 		//once added tell all users about it
 		socket.broadcast.emit('new-user', {
@@ -53,6 +51,19 @@ io.sockets.on('connection', function (socket) {
 		});
 	});
 
+	socket.on('score-submit', function(score){
+		//test if score time is longer than highscore
+		if(Date.parse('01/01/1970 00:'+score) > Date.parse('01/01/1970 00:'+highScore)){
+			highScore = score;
+			io.sockets.emit('new-high-score', {
+				username: socket.username,
+				score: highScore
+			});
+		} else {
+			highScore = highScore;
+		}
+	});
+
 	//when a user disconects - tell users
 	socket.on('disconnect', function () {
 		if (userAdded) {
@@ -64,7 +75,5 @@ io.sockets.on('connection', function (socket) {
 				numUsers: totalUsers
 			});
 		}
-		console.log(userNames);
-		console.log(totalUsers);
 	});
 });

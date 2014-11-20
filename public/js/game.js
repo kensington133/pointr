@@ -105,6 +105,7 @@ function endGame(element){
 	element.stop();
 	element.animate({opacity: 0}, 1000, function(){this.remove()});
 
+	var totalTime = $('.timer').text();
 	var secondsLasted = parseInt($('.ss').text());
 	var minutesLasted = parseInt($('.mm').text());
 	var minInflection = (minutesLasted > 1)? 'minutes' : 'minute';
@@ -117,6 +118,8 @@ function endGame(element){
 	}
 
 	$('.overLay').css('visibility','visible').hide().fadeIn();
+
+	socket.emit('score-submit', totalTime);
 }
 
 function gameTimer(){
@@ -222,6 +225,10 @@ socket.on('new-message', function(data){
 
 socket.on('user-left', function(data){
 	displayCustomMessage(data, 'Has left the game');
+});
+
+socket.on('new-high-score', function(data){
+	displayCustomMessage(data, 'has achieved the new high score of '+ data.score +'!');
 });
 
 $(document).ready(function(){
