@@ -13,6 +13,7 @@ body {
 .timer {
 	overflow: hidden;
 	font-size: 30px;
+	visibility: hidden;
 }
 .timer div {
 	float: left;
@@ -91,7 +92,7 @@ body {
 	border-left: 1px solid #5b6564;
 	overflow-y: scroll;
 }
-.chatFrame input {
+#chatText {
 	width: 275px;
 	height: 45px;
 	font-size: 20px;
@@ -122,4 +123,23 @@ body {
 .message .userName {
 	padding-right: 10px;
 	color: #38ee00;
+}
+
+.message .messageText.custom {
+	font-style: italic;
+}
+
+/* MEDIA QUERIES */
+@media only screen and (max-width: 1000px){
+	.chatFrame,
+	#chatText,
+	.chatFrame .totalUsers {
+		width: 200px;
+	}
+}
+
+@media only screen and (max-width: 600px){
+	#game {
+		width: 100%;
+	}
 }

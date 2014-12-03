@@ -24,6 +24,14 @@ io.sockets.on('connection', function (socket) {
 
 
 	socket.on('add-user', function(username){
+
+		//if username exits - add 2 random chars to end (numbers or letters)
+		if(username in userNames){
+			username = username + Math.random().toString(36).substr(2, 2);
+		} else {
+			username = username;
+		}
+
 		//store username in socket session
 		socket.username = username;
 		userNames[username] = username;
@@ -35,6 +43,9 @@ io.sockets.on('connection', function (socket) {
 			username: socket.username,
 			totalUsers: totalUsers
 		});
+
+		console.log('Total Users: '+totalUsers)
+		console.log('Users: ', userNames);
 	});
 
 	socket.on('new-message', function(data){
@@ -54,11 +65,14 @@ io.sockets.on('connection', function (socket) {
 	socket.on('score-submit', function(score){
 		//test if score time is longer than highscore
 		if(Date.parse('01/01/1970 00:'+score) > Date.parse('01/01/1970 00:'+highScore)){
+
 			highScore = score;
 			io.sockets.emit('new-high-score', {
 				username: socket.username,
 				score: highScore
 			});
+
+			console.log('New High Score! '+highScore);
 		} else {
 			highScore = highScore;
 		}
@@ -75,5 +89,7 @@ io.sockets.on('connection', function (socket) {
 				numUsers: totalUsers
 			});
 		}
+		console.log('Total Users: '+totalUsers)
+		console.log('Users: ', userNames);
 	});
 });
