@@ -2,6 +2,10 @@ Pointr
 ======
 A JavaScript game created using Node and Raphael.js
 
+Live Demo
+=========
+play pointr now at [pointr.nodejitsu.com](http://pointr.nodejitsu.com/)
+
 Installing
 ===========
 Download the zip or clone this repository
